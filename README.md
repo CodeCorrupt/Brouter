@@ -7,6 +7,16 @@ When macOS opens a URL, Brouter finds the first matching rule and executes its c
 
 ## Installation
 
+### Simple install
+
+Run this command to download and install the latest release into `~/Applications`:
+
+```
+curl -fsSL https://raw.githubusercontent.com/codecorrupt/brouter/main/install.sh | bash
+```
+
+After installation, set Brouter as your default browser in System Settings.
+
 ### From a release
 
 1. Download the latest `Brouter.app` from the GitHub releases page.
