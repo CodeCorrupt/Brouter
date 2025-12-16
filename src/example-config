@@ -1,0 +1,10 @@
+# Example brouter config
+# One rule per line:
+#   <regex> <command...>
+# First matching regex wins.
+
+# Work URLs in Chrome (Profile 1)
+^https?://(corp\.|jira\.|confluence\.) open -na "Google Chrome" --args --profile-directory="Profile 1"
+
+# Everything else in Chrome (Default profile)
+.* open -na "Google Chrome" --args --profile-directory="Default"
