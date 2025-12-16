@@ -12,10 +12,11 @@ CONFIG_CANDIDATES=(
 usage() {
   cat <<'EOF'
 Usage:
-  brouter.sh [--test] <url>
+  brouter.sh [--test] [--config <file>] <url>
 
 Options:
-  --test    Print the command that would be executed, without running it
+  --test          Print the command that would be executed, without running it
+  --config <file> Use the specified config file instead of the default
 
 Config format (one rule per line):
   <regex> <command...>
@@ -55,16 +56,32 @@ pick_config() {
 
 main() {
   local test_mode=false
+  local config=""
 
   if [[ ${1:-} == "-h" || ${1:-} == "--help" ]]; then
     usage
     exit 0
   fi
 
-  if [[ ${1:-} == "--test" ]]; then
-    test_mode=true
-    shift
-  fi
+  while [[ $# -gt 0 ]]; do
+    case "${1:-}" in
+      --test)
+        test_mode=true
+        shift
+        ;;
+      --config)
+        if [[ -z "${2:-}" ]]; then
+          echo "Error: --config requires a file argument" >&2
+          exit 1
+        fi
+        config="$2"
+        shift 2
+        ;;
+      *)
+        break
+        ;;
+    esac
+  done
 
   if [[ $# -ne 1 ]]; then
     usage
@@ -73,10 +90,14 @@ main() {
 
   local url="$1"
 
-  local config
-  if ! config="$(pick_config)"; then
-    echo "No config found. Create one of:" >&2
-    printf '  - %s\n' "${CONFIG_CANDIDATES[@]}" >&2
+  if [[ -z "$config" ]]; then
+    if ! config="$(pick_config)"; then
+      echo "No config found. Create one of:" >&2
+      printf '  - %s\n' "${CONFIG_CANDIDATES[@]}" >&2
+      exit 2
+    fi
+  elif [[ ! -f "$config" ]]; then
+    echo "Error: Config file not found: $config" >&2
     exit 2
   fi
 
