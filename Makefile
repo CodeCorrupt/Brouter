@@ -10,7 +10,7 @@ APP_DIR := $(DIST_DIR)/$(APP_NAME).app
 INSTALL_DIR_USER := $(HOME)/Applications
 INSTALL_DIR_SYSTEM := /Applications
 
-.PHONY: all build clean install install-system uninstall open-default-browser-settings
+.PHONY: all build clean install install-system uninstall open-default-browser-settings test
 
 all: build
 
@@ -106,3 +106,6 @@ open-default-browser-settings:
 	else \
 	  open "x-apple.systempreferences:com.apple.preference.general"; \
 	fi
+
+test:
+	src/test-brouter.sh
