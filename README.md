@@ -17,6 +17,8 @@ curl -fsSL https://raw.githubusercontent.com/codecorrupt/brouter/main/install.sh
 
 After installation, set Brouter as your default browser in System Settings.
 
+The installer also creates an example configuration file, but **you must edit it** to match your browsers and preferences before Brouter will be useful.
+
 ### From a release
 
 1. Download the latest `Brouter.app` from the GitHub releases page.
