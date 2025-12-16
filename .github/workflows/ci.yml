@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: Run tests
+        run: make test
+
+  release:
+    name: Build & Release
+    runs-on: macos-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: test
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build
+        run: make build VERSION="${GITHUB_REF_NAME#v}"
+
+      - name: Create release archive
+        run: |
+          cd dist
+          zip -r "../Brouter-${{ github.ref_name }}.zip" Brouter.app
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Brouter-${{ github.ref_name }}.zip
+          generate_release_notes: true
