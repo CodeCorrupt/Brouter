@@ -1,6 +1,6 @@
 APP_NAME := Brouter
 BUNDLE_ID := com.brouter.app
-VERSION := 1.0
+VERSION := 0.0.0
 
 BUILD_DIR := build
 DIST_DIR := dist
