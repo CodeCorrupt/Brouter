@@ -3,8 +3,38 @@
 #   <regex> <command...>
 # First matching regex wins.
 
-# Work URLs in Chrome (Profile 1)
-^https?://(corp\.|jira\.|confluence\.) open -na "Google Chrome" --args --profile-directory="Profile 1"
+# =============================================================================
+# CHROME EXAMPLES
+# =============================================================================
+# Chrome with specific profile (use "Profile 1", "Profile 2", etc. or "Default")
+# ^https?://(corp\.|jira\.|confluence\.) open -na "Google Chrome" --args --profile-directory="Profile 1"
 
+# Chrome with default profile
+# ^https?://.*\.youtube\.com open -na "Google Chrome" --args --profile-directory="Default"
+
+# Chrome incognito mode
+# ^https?://.*\.private\.com open -na "Google Chrome" --args --incognito
+
+# =============================================================================
+# FIREFOX EXAMPLES
+# =============================================================================
+# Firefox with specific profile (use profile name from about:profiles)
+# ^https?://.*\.mozilla\.org open -na "Firefox" --args -P "work"
+
+# Firefox with default profile
+# ^https?://.*\.reddit\.com open -na "Firefox"
+
+# Firefox private browsing
+# ^https?://.*\.secret\.com open -na "Firefox" --args --private-window
+
+# =============================================================================
+# SAFARI EXAMPLES
+# =============================================================================
+# Safari (no profile support, but can open normally)
+# ^https?://.*\.apple\.com open -na "Safari"
+
+# =============================================================================
+# CATCH-ALL (should be last)
+# =============================================================================
 # Everything else in Chrome (Default profile)
-.* open -na "Google Chrome" --args --profile-directory="Default"
+.* open -na "Google Chrome" --args 
