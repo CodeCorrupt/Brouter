@@ -107,8 +107,8 @@ main() {
   local line regex rest
   while IFS= read -r line || [[ -n "$line" ]]; do
     # Trim leading/trailing whitespace
-    line="${line#${line%%[![:space:]]*}}"
-    line="${line%${line##*[![:space:]]}}"
+    line="${line#"${line%%[![:space:]]*}"}"
+    line="${line%"${line##*[![:space:]]}"}"
 
     [[ -z "$line" ]] && continue
     [[ "$line" == \#* ]] && continue
@@ -116,7 +116,7 @@ main() {
     # Split into: regex + rest-of-line (command)
     regex="${line%%[[:space:]]*}"
     rest="${line#"$regex"}"
-    rest="${rest#${rest%%[![:space:]]*}}"
+    rest="${rest#"${rest%%[![:space:]]*}"}"
 
     if [[ -z "$rest" ]]; then
       continue
