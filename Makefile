@@ -107,5 +107,8 @@ open-default-browser-settings:
 	  open "x-apple.systempreferences:com.apple.preference.general"; \
 	fi
 
-test:
+lint:
+	git ls-files --cached --others --exclude-standard -- '*.sh' | xargs shellcheck
+
+test: lint
 	src/test-brouter.sh
