@@ -12,7 +12,10 @@ CONFIG_CANDIDATES=(
 usage() {
   cat <<'EOF'
 Usage:
-  brouter.sh <url>
+  brouter.sh [--test] <url>
+
+Options:
+  --test    Print the command that would be executed, without running it
 
 Config format (one rule per line):
   <regex> <command...>
@@ -51,9 +54,21 @@ pick_config() {
 }
 
 main() {
-  if [[ ${1:-} == "-h" || ${1:-} == "--help" || $# -ne 1 ]]; then
+  local test_mode=false
+
+  if [[ ${1:-} == "-h" || ${1:-} == "--help" ]]; then
     usage
     exit 0
+  fi
+
+  if [[ ${1:-} == "--test" ]]; then
+    test_mode=true
+    shift
+  fi
+
+  if [[ $# -ne 1 ]]; then
+    usage
+    exit 1
   fi
 
   local url="$1"
@@ -89,6 +104,12 @@ main() {
     if [[ "$url" =~ $regex ]]; then
       log "Matched regex: $regex"
       log "Command: $rest \"$url\""
+
+      if [[ "$test_mode" == true ]]; then
+        echo "Matched: $regex"
+        echo "Command: $rest \"$url\""
+        exit 0
+      fi
 
       # Run via eval so quotes in config work, then exit.
       eval "$rest \"\$url\""
